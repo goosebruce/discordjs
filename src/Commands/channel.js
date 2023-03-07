@@ -28,7 +28,7 @@ module.exports = {
         }
 
         // Create the "leads" channel in the category
-        const leadsChannel = await interaction.guild.channels.create(`${user.name}-leads`, {
+        const leadsChannel = await interaction.guild.channels.create(`${user.username}-leads`, {
             type: 'GUILD_TEXT',
             parent: '1077795894927302666',
             permissionOverwrites: [
@@ -46,7 +46,7 @@ module.exports = {
         });
 
         // Create the "chat" channel in the category
-        const chatChannel = await interaction.guild.channels.create(`${user.name}-chat/feedback`, {
+        const chatChannel = await interaction.guild.channels.create(`${user.username}-chat-feedback`, {
             type: 'GUILD_TEXT',
             parent: '1077795894927302666',
             permissionOverwrites: [
@@ -62,6 +62,15 @@ module.exports = {
                 },
             ],
         });
+        // Send a welcome message to the "chat" channel
+        const welcomeEmbed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle(`Welcome to your private chat channel, ${user.username}!`)
+            .setDescription(`This is a private channel for you and your roles. You can use this channel to give feedback, ask about leads, or anything else.\n\nPlease make sure to read the server rules and guidelines.`)
+            .setThumbnail(user.avatarURL({ dynamic: true }));
+
+        chatChannel.send({ embeds: [welcomeEmbed] });
+
 
         // Send a success message
         interaction.reply(`Created a new category with channels ${leadsChannel} and ${chatChannel} !`);
