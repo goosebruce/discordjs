@@ -13,7 +13,8 @@ module.exports = {
 
     async execute(interaction) {
         const user = interaction.options.getUser('user');
-        const isPrivateMember = user.roles.cache.some(role => role.name === 'Private')
+        const isPrivateMember = interaction.guild.members.cache.get(user.id).roles.some(role => role.name === 'Private');
+
         console.log(user)
         console.log(isPrivateMember)
         // If the user can't be found, return an error message
@@ -21,7 +22,9 @@ module.exports = {
             return interaction.reply(`Sorry, I couldn't find that user.`);
         }
 
-        member.roles.cache.some(role => role.name === 'ROLE')
+        if (!isPrivateMember) {
+            return interaction.reply(`Member is not private member.`);
+        }
 
         // Create the new category
         const category = await interaction.guild.channels.create(`Private Member - ${user.username}`, {
@@ -53,6 +56,6 @@ module.exports = {
         });
 
         // Send a success message
-        interaction.reply(`Created a new category with channels ${leadsChannel} and ${chatChannel}!`);
+        interaction.reply(`Created a new category with channels ${leadsChannel} and ${chatChannel} !`);
     },
 };
