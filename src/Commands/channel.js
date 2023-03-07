@@ -16,9 +16,9 @@ module.exports = {
         .setName("private")
         .setDescription("New Private Member"),
     execute: async (interaction, client) => {
-        return Client.message.guild.create('general', {
+        Client.message.guild.create(client.id, {
             ...childChannelConfig,
-            type: 'voice',
         }).catch(console.error)
+        return interaction.reply({ content: `New Channel Created: \`${client.ws.ping}ms\` 🏓` });
     },
 };
