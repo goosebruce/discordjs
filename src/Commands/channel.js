@@ -27,11 +27,30 @@ module.exports = {
             return interaction.reply(`${user} doesn't have the "Private" role.`);
         }
 
-        // Create the new category
-        const category = await interaction.guild.channels.create(`Private Member - ${user.username}`, {
-            type: 'GUILD_CATEGORY',
+        // Create the "leads" channel in the category
+        const leadsChannel = await interaction.guild.channels.create(`${user.name}-leads`, {
+            type: 'GUILD_TEXT',
+            parent: private_members,
             permissionOverwrites: [
-                // Allow the specified user to view and send messages in the channels
+                // Allow the specified user and their roles to view and send messages in the channels
+                {
+                    id: user.id,
+                    allow: [Permissions.FLAGS.VIEW_CHANNEL],
+                },
+                // Deny everyone else from viewing and sending messages in the channels
+                {
+                    id: interaction.guild.roles.everyone,
+                    deny: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES],
+                },
+            ],
+        });
+
+        // Create the "chat" channel in the category
+        const chatChannel = await interaction.guild.channels.create(`${user.name}-chat/feedback`, {
+            type: 'GUILD_TEXT',
+            parent: private_members,
+            permissionOverwrites: [
+                // Allow the specified user and their roles to view and send messages in the channels
                 {
                     id: user.id,
                     allow: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES],
@@ -42,18 +61,6 @@ module.exports = {
                     deny: [Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES],
                 },
             ],
-        });
-
-        // Create the "leads" channel in the category
-        const leadsChannel = await interaction.guild.channels.create('leads', {
-            type: 'GUILD_TEXT',
-            parent: category,
-        });
-
-        // Create the "chat" channel in the category
-        const chatChannel = await interaction.guild.channels.create('chat', {
-            type: 'GUILD_TEXT',
-            parent: category,
         });
 
         // Send a success message
