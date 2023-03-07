@@ -13,17 +13,18 @@ module.exports = {
 
     async execute(interaction) {
         const user = interaction.options.getUser('user');
-        const isPrivateMember = interaction.guild.members.cache.get(user.id).roles.some(role => role.name === 'Private');
-
-        console.log(user)
-        console.log(isPrivateMember)
         // If the user can't be found, return an error message
         if (!user) {
             return interaction.reply(`Sorry, I couldn't find that user.`);
         }
 
-        if (!isPrivateMember) {
-            return interaction.reply(`Member is not private member.`);
+        //check for private role only
+        const member = interaction.guild.members.cache.get(user.id);
+        const roles = member.roles.cache;
+
+        // Check if the user has the "Private" role
+        if (!roles.some(role => role.name === 'Private')) {
+            return interaction.reply(`${user} doesn't have the "Private" role.`);
         }
 
         // Create the new category
