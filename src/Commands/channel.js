@@ -30,7 +30,7 @@ module.exports = {
         // Create the "leads" channel in the category
         const leadsChannel = await interaction.guild.channels.create(`${user.name}-leads`, {
             type: 'GUILD_TEXT',
-            parent: private_members,
+            parent: '1075961197683282061',
             permissionOverwrites: [
                 // Allow the specified user and their roles to view and send messages in the channels
                 {
@@ -48,7 +48,7 @@ module.exports = {
         // Create the "chat" channel in the category
         const chatChannel = await interaction.guild.channels.create(`${user.name}-chat/feedback`, {
             type: 'GUILD_TEXT',
-            parent: private_members,
+            parent: '1075961197683282061',
             permissionOverwrites: [
                 // Allow the specified user and their roles to view and send messages in the channels
                 {
