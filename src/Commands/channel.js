@@ -66,11 +66,12 @@ module.exports = {
         const welcomeEmbed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle(`Welcome to your private chat channel, ${user.username}!`)
-            .setDescription(`This is a private channel for you and your roles. You can use this channel to give feedback, ask about leads, or anything else.\n\nPlease make sure to read the server rules and guidelines.`)
+            .setDescription(`This is a private chat channel for you. You can use this channel to give feedback, ask about leads, or anything else.
+            \nYou can find all of your personalized leads in the #${user.username}-leads channel. These are private to you and will not be shared with anyone else.    
+            \n\nPlease make sure to read the server rules and guidelines.`)
             .setThumbnail(user.avatarURL({ dynamic: true }));
 
         chatChannel.send({ embeds: [welcomeEmbed] });
-
 
         // Send a success message
         interaction.reply(`Created a new category with channels ${leadsChannel} and ${chatChannel} !`);
