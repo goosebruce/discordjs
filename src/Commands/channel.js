@@ -5,9 +5,9 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('new_private_member')
         .setDescription('Creates a new category with two channels.')
-        .addStringOption(option =>
-            option.setName('username')
-                .setDescription('The Discord username of the user who will have access to the channels.')
+        .addUserOption(option =>
+            option.setName('user')
+                .setDescription('The user who will have access to the channels.')
                 .setRequired(true)
         ),
 
@@ -16,15 +16,15 @@ module.exports = {
         const username = interaction.options.getString('username');
 
         // Find the user by their username
-        const user = interaction.guild.members.cache.find(member => member.user.username === username);
-
+        const user = interaction.options.getUser('user');
+        console.log(user)
         // If the user can't be found, return an error message
         if (!user) {
-            return interaction.reply(`Sorry, I couldn't find a user with the username ${username}.`);
+            return interaction.reply(`Sorry, I couldn't find that user.`);
         }
 
         // Create the new category
-        const category = await interaction.guild.channels.create('My Category', {
+        const category = await interaction.guild.channels.create(`Private Member - ${user.username}`, {
             type: 'GUILD_CATEGORY',
             permissionOverwrites: [
                 // Allow the specified user to view and send messages in the channels
