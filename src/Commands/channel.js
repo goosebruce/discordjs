@@ -17,7 +17,7 @@ module.exports = {
         if (!user) {
             return interaction.reply(`Sorry, I couldn't find that user.`);
         }
-
+        console.log(user)
         //check for private role only
         const member = interaction.guild.members.cache.get(user.id);
         const roles = member.roles.cache;
