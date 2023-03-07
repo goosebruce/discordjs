@@ -12,16 +12,16 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        // Get the user's Discord username from the command's input
-        const username = interaction.options.getString('username');
-
-        // Find the user by their username
         const user = interaction.options.getUser('user');
+        const isPrivateMember = user.roles.cache.some(role => role.name === 'Private')
         console.log(user)
+        console.log(isPrivateMember)
         // If the user can't be found, return an error message
         if (!user) {
             return interaction.reply(`Sorry, I couldn't find that user.`);
         }
+
+        member.roles.cache.some(role => role.name === 'ROLE')
 
         // Create the new category
         const category = await interaction.guild.channels.create(`Private Member - ${user.username}`, {
