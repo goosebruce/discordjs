@@ -9,7 +9,7 @@ const client = new Client({
 const commands = new Collection(); // Where the bot (slash) commands will be stored.
 const commandarray = []; // Array to store commands for sending to the REST API.
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
-const port = process.env.RAILWAY_PORTS
+const port = process.env.PORT
 const app = express();
 
 // Execute code when the "ready" client event is triggered.
