@@ -70,6 +70,11 @@ app.post('/webhook', (req, res) => {
   // Respond with a 200 OK status code to acknowledge receipt of the webhook
   res.sendStatus(200);
 });
+
+app.get('/webhook', (req, res) => {
+  res.send('online');
+});
+
 // Start the express app
 app.listen(80, () => {
   console.log('Webhook endpoint listening on port 3000!');
