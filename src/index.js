@@ -14,6 +14,13 @@ const app = express();
 app.use(express.json({
   type: "*/*" // optional, only if you want to be sure that everything is parsed as JSON. Wouldn't recommend
 }));
+const connection = mysql.createConnection({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE
+});
+
 // Execute code when the "ready" client event is triggered.
 client.once("ready", () => {
   const commandFiles = fs
@@ -63,20 +70,30 @@ client.on("interactionCreate", async interaction => {
   }
 });
 
+
+////////////////////////////////////////////////////////////////////////
 // Set up a route to accept the webhook
 app.post('/webhook', (req, res) => {
   // Parse the JSON payload from the webhook request body
   const payload = req.body
   console.log(payload);
+  connection.connect();
   // Respond with a 200 OK status code to acknowledge receipt of the webhook
+  const { id, discord_id, discord_username, created_at, email, valid, cancel_at_period_end, expires_at, name } = req.body;
+
+  // Insert the parameters into the database
+  connection.query('INSERT INTO User SET ?', { id, discord_id, discord_username, created_at, email, valid, cancel_at_period_end, expires_at, name }, function (error, results, fields) {
+    if (error) throw error;
+    console.log(results);
+  });
+  // Close the MySQL connection
+  connection.end();
   res.sendStatus(200);
 });
 
 app.get('/webhook', (req, res) => {
-  const html = '<h1>Server is online</h1>';
-  console.log(req.body);
+  const html = '<p>server is online</p>';
   res.send(html);
-
 });
 
 // Start the express app
