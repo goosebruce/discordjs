@@ -9,6 +9,8 @@ const client = new Client({
 const commands = new Collection(); // Where the bot (slash) commands will be stored.
 const commandarray = []; // Array to store commands for sending to the REST API.
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
+const app = express();
+
 // Execute code when the "ready" client event is triggered.
 client.once("ready", () => {
   const commandFiles = fs
@@ -58,10 +60,6 @@ client.on("interactionCreate", async interaction => {
   }
 });
 
-client.login(token); // Login to the bot client via the defined "token" string.
-
-const app = express();
-
 // Set up a route to accept the webhook
 app.post('/webhook', (req, res) => {
   // Parse the JSON payload from the webhook request body
@@ -73,6 +71,7 @@ app.post('/webhook', (req, res) => {
 
 app.get('/webhook', (req, res) => {
   const html = '<h1>Server is online</h1>';
+  console.log(req.body);
   res.send(html);
 
 });
@@ -81,3 +80,5 @@ app.get('/webhook', (req, res) => {
 app.listen(80, () => {
   console.log('Webhook endpoint listening on port 3000!');
 });
+client.login(token); // Login to the bot client via the defined "token" string.
+
