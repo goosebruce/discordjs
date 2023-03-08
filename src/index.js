@@ -78,13 +78,12 @@ client.on("interactionCreate", async interaction => {
 app.post('/webhook', (req, res) => {
   // Parse the JSON payload from the webhook request body
   const payload = req.body
-  console.log(payload);
   connection.connect();
   // Respond with a 200 OK status code to acknowledge receipt of the webhook
   const { id, discord_id, discord_username, created_at, email, valid, cancel_at_period_end, expires_at, name } = req.body;
 
   // Insert the parameters into the database
-  connection.query('INSERT INTO User SET ?', { id, discord_id, discord_username, created_at, email, valid, cancel_at_period_end, expires_at, name }, function (error, results, fields) {
+  connection.query('INSERT INTO users SET ?', { id, discord_id, discord_username, created_at, email, valid, cancel_at_period_end, expires_at, name }, function (error, results, fields) {
     if (error) throw error;
     console.log(results);
   });
