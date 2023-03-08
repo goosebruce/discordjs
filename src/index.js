@@ -61,18 +61,15 @@ client.on("interactionCreate", async interaction => {
 client.login(token); // Login to the bot client via the defined "token" string.
 
 
-
-
-
 const app = express();
 
 // Set up a route to accept the webhook
 app.post('/webhook', (req, res) => {
   // Parse the JSON payload from the webhook request body
   const payload = req.body;
-
+  console.log(payload);
   // Check if the webhook event is a "lead.create" event
-  if (payload.event === 'lead.create') {
+  if (payload.action === 'lead.create') {
     // Get the lead object from the webhook payload
     const data = payload.data;
     // Find the "leads" channel in the server
@@ -82,11 +79,9 @@ app.post('/webhook', (req, res) => {
       channel.send(data);
     }
   }
-
   // Respond with a 200 OK status code to acknowledge receipt of the webhook
   res.sendStatus(200);
 });
-
 // Start the express app
 app.listen(3000, () => {
   console.log('Webhook endpoint listening on port 3000!');
