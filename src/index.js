@@ -72,7 +72,9 @@ app.post('/webhook', (req, res) => {
 });
 
 app.get('/webhook', (req, res) => {
-  res.send('online');
+  const html = '<h1>Server is online</h1>';
+  res.send(html);
+
 });
 
 // Start the express app
