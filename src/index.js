@@ -64,7 +64,7 @@ client.on("interactionCreate", async interaction => {
 // Set up a route to accept the webhook
 app.post('/webhook', (req, res) => {
   // Parse the JSON payload from the webhook request body
-  const payload = req;
+  const payload = req.body
   console.log(payload);
   // Respond with a 200 OK status code to acknowledge receipt of the webhook
   res.sendStatus(200);
