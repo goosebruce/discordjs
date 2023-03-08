@@ -16,12 +16,7 @@ const app = express();
 app.use(express.json({
   type: "*/*" // optional, only if you want to be sure that everything is parsed as JSON. Wouldn't recommend
 }));
-const connection = mysql.createConnection({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE
-});
+const connection = mysql.createConnection(process.env.MYSQL_URL);
 
 // Execute code when the "ready" client event is triggered.
 client.once("ready", () => {
