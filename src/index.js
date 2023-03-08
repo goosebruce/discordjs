@@ -9,6 +9,7 @@ const client = new Client({
 const commands = new Collection(); // Where the bot (slash) commands will be stored.
 const commandarray = []; // Array to store commands for sending to the REST API.
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
+const port = process.env.RAILWAY_PORTS
 const app = express();
 
 // Execute code when the "ready" client event is triggered.
@@ -77,8 +78,8 @@ app.get('/webhook', (req, res) => {
 });
 
 // Start the express app
-app.listen(80, () => {
-  console.log('Webhook endpoint listening on port 3000!');
+app.listen(port, () => {
+  console.log(`Webhook endpoint listening on port ${port}!`);
 });
 client.login(token); // Login to the bot client via the defined "token" string.
 
