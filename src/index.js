@@ -75,24 +75,19 @@ client.on('guildMemberAdd', async (member) => {
   const guild = member.guild;
   const proRole = guild.roles.cache.find(role => role.name === 'pro');
   const proMembers = proRole.members.size;
+  const roleId = `A${proMembers < 5 ? proMembers / 5 : 0}`
 
   // Check if there are enough members to create a new channel and role
-  if (proMembers % 5 === 0) {
+  if (proMembers % 5 === 0 || proMembers === 1) {
     // Create a new role with the name A1, A2, A3, etc
     const newRole = await guild.roles.create({
       data: {
-        name: `A${proMembers / 5}`
+        name: roleId
       }
     });
 
-    // Assign the new role to the 5 members
-    const members = proRole.members.array().slice(proMembers - 5, proMembers);
-    members.forEach(async (member) => {
-      await member.roles.add(newRole);
-    });
-
     // Create a new channel with the name A1, A2, A3, etc
-    const newChannel = await guild.channels.create(`Pro Leads - A${proMembers / 5}`, {
+    const newChannel = await guild.channels.create(`Pro Leads - ${roleId}`, {
       type: 'text',
       parent: '1077796703408762951' // Replace CATEGORY_ID with the ID of the category you want to create the channel in
     });
@@ -108,10 +103,15 @@ client.on('guildMemberAdd', async (member) => {
         allow: ['VIEW_CHANNEL']
       }
     ]);
-
+    await member.roles.add(newRole);
     // Send a message in the new channel to notify the members
     newChannel.send(`A new group has been formed!`);
+  } else {
+    const groupRole = guild.roles.cache.find(role => role.name === 'roleId');
+    await member.roles.add(groupRole);
+
   }
+
 });
 
 ////////////////////////////////////////////////////////////////////////
