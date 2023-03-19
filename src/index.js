@@ -105,9 +105,11 @@ client.on('guildMemberAdd', async (member) => {
     ]);
     await member.roles.add(newRole);
     // Send a message in the new channel to notify the members
+    console.log(`new group and role created, adding member to role ${roleId}`)
     newChannel.send(`A new group has been formed!`);
   } else {
-    const groupRole = guild.roles.cache.find(role => role.name === 'roleId');
+    console.log(`role already exists, adding member to role ${roleId}`)
+    const groupRole = guild.roles.cache.find(role => role.name === roleId);
     await member.roles.add(groupRole);
 
   }
