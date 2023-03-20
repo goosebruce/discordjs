@@ -98,7 +98,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
     let assignedRole = null;
     groupRoles.forEach(role => {
       const memberCount = role.members.size;
-      if (memberCount < 5 && !assignedRole) {
+      if (memberCount < 2 && !assignedRole) {
         // If the group has less than 5 members and a role hasn't been assigned yet, assign the new member to this group
         assignedRole = role;
       }
