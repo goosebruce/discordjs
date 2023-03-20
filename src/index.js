@@ -69,19 +69,24 @@ client.on("interactionCreate", async interaction => {
 
 
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
-  // Get the 'Pro' role
+
+
   const proRole = newMember.guild.roles.cache.find(role => role.name === 'Pro');
 
   // Check if the new role is the 'Pro' role
   const newRole = newMember.roles.cache.find(role => role.name === 'Pro');
-  if (newRole === proRole) {
+  const proGroupRoles = member.roles.cache.filter(role => role.name.startsWith('Pro Group -'));
+  const proGroupCount = proGroupRoles.size;
+  if (proGroupCount === 1) {
+    console.log('exiting, group already exists')
+    return
+  }
+  else if (newRole === proRole) {
     // Get the category object
     const categoryId = '1077796703408762951';
     const category = newMember.guild.channels.cache.get(categoryId);
-
     // Get all roles in the server
     const roles = newMember.guild.roles.cache;
-
     // Filter roles that start with 'Pro Group -'
     const groupRoles = roles.filter(role => role.name.startsWith('Pro Group - '));
 
