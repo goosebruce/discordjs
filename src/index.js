@@ -101,6 +101,8 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       if (memberCount < 2 && !assignedRole) {
         // If the group has less than 5 members and a role hasn't been assigned yet, assign the new member to this group
         assignedRole = role;
+      } else {
+        console.log('Group full')
       }
     });
 
