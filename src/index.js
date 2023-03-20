@@ -98,15 +98,16 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
     let assignedRole = null;
     groupRoles.forEach(role => {
       const memberCount = role.members.size;
-      if (memberCount < 2 && !assignedRole) {
+      if (memberCount < 2 && assignedRole === null) {
         // If the group has less than 5 members and a role hasn't been assigned yet, assign the new member to this group
         assignedRole = role;
+        console.log(`memberCount = ${memberCount}`)
       } else {
         console.log('Group full')
       }
     });
 
-    if (!assignedRole) {
+    if (assignedRole === null) {
       // If all groups have 5 members, create a new role and assign it to the new member
       const newRoleName = `Pro Group - ${groupRoles.size + 1}`;
       console.log('group size: ' + groupRoles.size)
