@@ -107,6 +107,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
     if (!assignedRole) {
       // If all groups have 5 members, create a new role and assign it to the new member
       const newRoleName = `Pro Group - ${groupRoles.size + 1}`;
+      console.log('group size: ' + groupRoles.size)
       try {
         const newRole = await guild.roles.create({
           data: {
@@ -139,7 +140,6 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       // If there is an available group with less than 5 members, assign the new member to this group
       newMember.roles.add(assignedRole);
       console.log(`user added to existing group: ${assignedRole.name}`);
-    } `);
     }
   }
 
@@ -170,7 +170,7 @@ app.get('/webhook', (req, res) => {
 
 // Start the express app
 app.listen(port, () => {
-  console.log(`Webhook endpoint listening on port ${ port } !`);
+  console.log(`Webhook endpoint listening on port ${port}!`);
 });
 client.login(token); // Login to the bot client via the defined "token" string.
 
