@@ -67,53 +67,42 @@ client.on("interactionCreate", async interaction => {
   }
 });
 
-client.on('guildMemberAdd', async (member) => {
-  // Check if the member has the role "pro"
-  if (!member.roles.cache.some(role => role.name === 'pro')) return;
-
-  // Get the guild and number of members with the "pro" role
-  const guild = member.guild;
-  const proRole = guild.roles.cache.find(role => role.name === 'pro');
-  const proMembers = proRole.members.size;
-  const roleId = `A${proMembers < 5 ? proMembers / 5 : 0}`
-
-  // Check if there are enough members to create a new channel and role
-  if (proMembers % 5 === 0 || proMembers === 1) {
-    // Create a new role with the name A1, A2, A3, etc
-    const newRole = await guild.roles.create({
-      data: {
-        name: roleId
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  const proRole = newMember.guild.roles.cache.find(role => role.name === 'pro');
+  if (!oldMember.roles.cache.has(proRole.id) && newMember.roles.cache.has(proRole.id)) {
+    const existingGroups = newMember.guild.roles.cache.filter(role => role.name.startsWith('Group')).array();
+    let group;
+    existingGroups.forEach((existingGroup) => {
+      if (existingGroup.members.size < 5 && !group) {
+        group = existingGroup;
       }
     });
-
-    // Create a new channel with the name A1, A2, A3, etc
-    const newChannel = await guild.channels.create(`Pro Leads - ${roleId}`, {
-      type: 'text',
-      parent: '1077796703408762951' // Replace CATEGORY_ID with the ID of the category you want to create the channel in
-    });
-
-    // Set permissions for the new channel
-    newChannel.overwritePermissions([
-      {
-        id: guild.roles.everyone.id,
-        deny: ['VIEW_CHANNEL']
-      },
-      {
-        id: newRole.id,
-        allow: ['VIEW_CHANNEL']
-      }
-    ]);
-    await member.roles.add(newRole);
-    // Send a message in the new channel to notify the members
-    console.log(`new group and role created, adding member to role ${roleId}`)
-    newChannel.send(`A new group has been formed!`);
-  } else {
-    console.log(`role already exists, adding member to role ${roleId}`)
-    const groupRole = guild.roles.cache.find(role => role.name === roleId);
-    await member.roles.add(groupRole);
-
+    if (!group) {
+      group = await newMember.guild.roles.create({
+        data: {
+          name: `Group ${existingGroups.length + 1}`
+        }
+      });
+      const category = newMember.guild.channels.cache.get('1077796703408762951');
+      const channel = await newMember.guild.channels.create(`Group ${existingGroups.length + 1}`, {
+        type: 'text',
+        parent: category,
+        permissionOverwrites: [
+          {
+            id: newMember.guild.roles.everyone.id,
+            deny: ['VIEW_CHANNEL']
+          },
+          {
+            id: group.id,
+            allow: ['VIEW_CHANNEL']
+          }
+        ]
+      });
+    }
+    await newMember.roles.add(group);
+    const groupName = group.name;
+    newMember.guild.systemChannel.send(`${newMember.user.tag} has been assigned to ${groupName}.`);
   }
-
 });
 
 ////////////////////////////////////////////////////////////////////////
