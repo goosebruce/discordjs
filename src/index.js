@@ -4,7 +4,7 @@ const fs = require("fs"); // Define fs (file system).
 const express = require('express');
 const mysql = require('mysql');
 const { Client, Intents, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
-
+const config = require('./config.json');
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 }); // Connect to our discord bot.
@@ -87,14 +87,14 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
     // Get all roles in the server
     const roles = newMember.guild.roles.cache;
     // Filter roles that start with 'Pro Group -'
-    const groupRoles = roles.filter(role => role.name.startsWith('Pro Group - '));
+    const groupRoles = roles.filter(role => role.name.startsWith(config.pro_role_suffix));
 
     // Loop through each group role and count the number of members
     let assignedRole = null;
     groupRoles.forEach(role => {
       console.log(`${role.name} members: ${role.members.size}`)
       const memberCount = role.members.size;
-      if (memberCount < 2 && assignedRole === null) {
+      if (memberCount < config.max_pro_members_per_group && assignedRole === null) {
         // If the group has less than 5 members and a role hasn't been assigned yet, assign the new member to this group
         assignedRole = role;
         console.log(`assigning role ${assignedRole.name}`)
@@ -105,7 +105,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 
     if (assignedRole === null) {
       // If all groups have 5 members, create a new role and assign it to the new member
-      const newRoleName = `Pro Group - ${groupRoles.size + 1}`;
+      const newRoleName = `config.pro_role_suffix${groupRoles.size + 1}`;
       console.log(`creating new role: ${newRoleName}`)
       try {
         const newRole = await newMember.guild.roles.create({
@@ -115,7 +115,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
         });
         newMember.roles.add(newRole);
         // Create a new channel under the specified category
-        const channel = await newMember.guild.channels.create(`Leads - ${newRole.name}`, {
+        const channel = await newMember.guild.channels.create(`config.pro_channel_suffix${newRole.name}`, {
           type: 'text',
           parent: category,
           permissionOverwrites: [
