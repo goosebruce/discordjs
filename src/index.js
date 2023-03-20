@@ -76,13 +76,13 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   const proGroupCount = proGroupRoles.size;
 
   if (proGroupCount === 1) {
-    if (proGroupCount === undefined) {
-      const proGroupRoles = member.roles.cache.filter(role => role.name.startsWith('Pro Group -'));
+    console.log(' newRole: ' + newRole)
+    if (newRole === undefined) {
       if (proGroupRoles.size === 0) {
         // The member didn't have any "Pro Group -" roles, do nothing
         return;
       }
-      newMember.roles.remove(proGroupRoles).catch(console.error);
+      newMember.roles.remove(proGroupRoles)
     }
   }
   else if (newRole === proRole) {
