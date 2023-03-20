@@ -109,11 +109,9 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       console.log(`creating new role: ${newRoleName}`)
       try {
         const newRole = await newMember.guild.roles.create({
-          data: {
-            name: newRoleName,
-            color: 'BLUE',
-          },
-          reason: 'New group role created',
+          name: newRoleName,
+          color: 'RANDOM',
+          reason: 'New pro group role created',
         });
         newMember.roles.add(newRole);
         // Create a new channel under the specified category
