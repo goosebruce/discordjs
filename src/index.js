@@ -68,6 +68,7 @@ client.on("interactionCreate", async interaction => {
 });
 
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  console.log(newMember)
   const proRole = newMember.guild.roles.cache.find(role => role.name === 'pro');
   if (!oldMember.roles.cache.has(proRole.id) && newMember.roles.cache.has(proRole.id)) {
     const existingGroups = newMember.guild.roles.cache.filter(role => role.name.startsWith('Group')).array();
