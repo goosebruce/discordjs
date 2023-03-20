@@ -138,7 +138,6 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
     } else {
       // If there is an available group with less than 5 members, assign the new member to this group
       newMember.roles.add(assignedRole);
-      newMember.send(`You have been assigned the group role: ${assignedRole.name}`);
     }
   }
 
