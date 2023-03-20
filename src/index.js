@@ -71,9 +71,6 @@ client.on("interactionCreate", async interaction => {
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
   // Check if the new role is the 'Pro' role
   const proRole = newMember.roles.cache.find(role => role.name === 'Pro');
-  console.log(proRole)
-  const oldproRole = oldMember.roles.cache.find(role => role.name === 'Pro');
-  console.log(oldproRole)
   const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group - '));
   const proGroupCount = proGroupRoles.size;
   if (proGroupCount === 1) {
