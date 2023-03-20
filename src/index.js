@@ -67,45 +67,74 @@ client.on("interactionCreate", async interaction => {
   }
 });
 
+
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
-  console.log('working')
+  // Get the 'Pro' role
   const proRole = newMember.guild.roles.cache.find(role => role.name === 'Pro');
-  if (!oldMember.roles.cache.has(proRole.id) && newMember.roles.cache.has(proRole.id)) {
-    const existingGroups = [newMember.guild.roles.cache.filter(role => role.name.startsWith('Pro Group - ')).values()];
-    let group;
-    existingGroups.forEach((existingGroup) => {
-      if (existingGroup.members.size < 5 && !group) {
-        group = existingGroup;
+
+  // Check if the new role is the 'Pro' role
+  const newRole = newMember.roles.cache.find(role => role.name === 'Pro');
+  if (newRole === proRole) {
+    // Get the category object
+    const categoryId = '1077796703408762951';
+    const category = newMember.guild.channels.cache.get(categoryId);
+
+    // Get all roles in the server
+    const roles = newMember.guild.roles.cache;
+
+    // Filter roles that start with 'Pro Group -'
+    const groupRoles = roles.filter(role => role.name.startsWith('Pro Group - '));
+
+    // Loop through each group role and count the number of members
+    let assignedRole = null;
+    groupRoles.forEach(role => {
+      const memberCount = role.members.size;
+      if (memberCount < 5 && !assignedRole) {
+        // If the group has less than 5 members and a role hasn't been assigned yet, assign the new member to this group
+        assignedRole = role;
       }
     });
-    if (!group) {
-      group = await newMember.guild.roles.create({
-        data: {
-          name: `Group ${existingGroups.length + 1}`
-        }
-      });
-      const category = newMember.guild.channels.cache.get('1077796703408762951');
-      const channel = await newMember.guild.channels.create(`Pro Group -  ${existingGroups.length + 1}`, {
-        type: 'text',
-        parent: category,
-        permissionOverwrites: [
-          {
-            id: newMember.guild.roles.everyone.id,
-            deny: ['VIEW_CHANNEL']
+
+    if (!assignedRole) {
+      // If all groups have 5 members, create a new role and assign it to the new member
+      const newRoleName = `Pro Group - ${groupRoles.size + 1}`;
+      try {
+        const newRole = await newMember.guild.roles.create({
+          data: {
+            name: newRoleName,
+            color: 'BLUE',
           },
-          {
-            id: group.id,
-            allow: ['VIEW_CHANNEL']
-          }
-        ]
-      });
+          reason: 'New group role created',
+        });
+        newMember.roles.add(newRole);
+        newMember.send(`You have been assigned the new group role: ${newRole.name}`);
+
+        // Create a new channel under the specified category
+        const channel = await newMember.guild.channels.create(`Leads - ${newRole.name}`, {
+          type: 'text',
+          parent: category,
+          permissionOverwrites: [
+            {
+              id: newMember.guild.id,
+              deny: ['VIEW_CHANNEL'],
+            },
+            {
+              id: newRole.id,
+              allow: ['VIEW_CHANNEL'],
+            },
+          ],
+        });
+        console.log(`New channel created: ${channel.name}`);
+      } catch (error) {
+        console.error('Error creating new group role:', error);
+      }
+    } else {
+      // If there is an available group with less than 5 members, assign the new member to this group
+      newMember.roles.add(assignedRole);
+      newMember.send(`You have been assigned the group role: ${assignedRole.name}`);
     }
-    await newMember.roles.add(group);
-    const groupName = group.name;
-    newMember.guild.systemChannel.send(`${newMember.user.tag} has been assigned to ${groupName}.`);
   }
 });
-
 ////////////////////////////////////////////////////////////////////////
 // Set up a route to accept the webhook
 app.post('/webhook', (req, res) => {
