@@ -108,7 +108,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       // If all groups have 5 members, create a new role and assign it to the new member
       const newRoleName = `Pro Group - ${groupRoles.size + 1}`;
       try {
-        const newRole = await newMember.guild.roles.create({
+        const newRole = await guild.roles.create({
           data: {
             name: 'test',
             color: 'BLUE',
@@ -117,7 +117,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
         });
         newMember.roles.add(newRole);
         // Create a new channel under the specified category
-        const channel = await newMember.guild.channels.create(`Leads - ${newRole.name}`, {
+        const channel = await guild.channels.create(`Leads - ${newRole.name}`, {
           type: 'text',
           parent: category,
           permissionOverwrites: [
