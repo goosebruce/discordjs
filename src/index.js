@@ -71,7 +71,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   console.log('working')
   const proRole = newMember.guild.roles.cache.find(role => role.name === 'Pro');
   if (!oldMember.roles.cache.has(proRole.id) && newMember.roles.cache.has(proRole.id)) {
-    const existingGroups = newMember.guild.roles.cache.filter(role => role.name.startsWith('Group')).array();
+    const existingGroups = [newMember.guild.roles.cache.filter(role => role.name.startsWith('Pro Group - ')).values()];
     let group;
     existingGroups.forEach((existingGroup) => {
       if (existingGroup.members.size < 5 && !group) {
@@ -85,7 +85,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
         }
       });
       const category = newMember.guild.channels.cache.get('1077796703408762951');
-      const channel = await newMember.guild.channels.create(`Group ${existingGroups.length + 1}`, {
+      const channel = await newMember.guild.channels.create(`Pro Group -  ${existingGroups.length + 1}`, {
         type: 'text',
         parent: category,
         permissionOverwrites: [
