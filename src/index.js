@@ -74,8 +74,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group - '));
   const proGroupCount = proGroupRoles.size;
   if (proGroupCount === 1) {
-    console.log(' newRole: ' + newRole)
-    if (newRole === undefined) {
+    if (proRole === undefined) {
       if (proGroupRoles.size === 0) {
         // The member didn't have any "Pro Group -" roles, do nothing
         return;
