@@ -116,8 +116,6 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
           reason: 'New group role created',
         });
         newMember.roles.add(newRole);
-        newMember.send(`You have been assigned the new group role: ${newRole.name}`);
-
         // Create a new channel under the specified category
         const channel = await newMember.guild.channels.create(`Leads - ${newRole.name}`, {
           type: 'text',
