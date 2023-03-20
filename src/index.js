@@ -75,7 +75,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 
   // Check if the new role is the 'Pro' role
   const newRole = newMember.roles.cache.find(role => role.name === 'Pro');
-  const proGroupRoles = member.roles.cache.filter(role => role.name.startsWith('Pro Group - '));
+  const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group - '));
   const proGroupCount = proGroupRoles.size;
   if (proGroupCount === 1) {
     console.log('exiting, group already exists')
