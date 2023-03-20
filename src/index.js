@@ -69,17 +69,21 @@ client.on("interactionCreate", async interaction => {
 
 
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
-
-
   const proRole = newMember.guild.roles.cache.find(role => role.name === 'Pro');
-
   // Check if the new role is the 'Pro' role
   const newRole = newMember.roles.cache.find(role => role.name === 'Pro');
   const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group - '));
   const proGroupCount = proGroupRoles.size;
+
   if (proGroupCount === 1) {
-    console.log('exiting, group already exists')
-    return
+    if (proGroupCount === undefined) {
+      const proGroupRoles = member.roles.cache.filter(role => role.name.startsWith('Pro Group -'));
+      if (proGroupRoles.size === 0) {
+        // The member didn't have any "Pro Group -" roles, do nothing
+        return;
+      }
+      newMember.roles.remove(proGroupRoles).catch(console.error);
+    }
   }
   else if (newRole === proRole) {
     // Get the category object
@@ -139,6 +143,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       newMember.send(`You have been assigned the group role: ${assignedRole.name}`);
     }
   }
+
 });
 ////////////////////////////////////////////////////////////////////////
 // Set up a route to accept the webhook
