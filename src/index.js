@@ -73,7 +73,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   const proRole = newMember.roles.cache.find(role => role.name === 'Pro');
   console.log(proRole)
   const oldproRole = oldMember.roles.cache.find(role => role.name === 'Pro');
-  console.log(oldProRole)
+  console.log(oldproRole)
   const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group - '));
   const proGroupCount = proGroupRoles.size;
   if (proGroupCount === 1) {
@@ -86,7 +86,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       newMember.roles.remove(proGroupRoles)
     }
   }
-  else if (!oldproRole && proRole) {
+  else if (!oldMember.roles.cache.has(proRole.id) && newMember.roles.cache.has(proRole.id)) {
     // Get the category object
     const categoryId = '1077796703408762951';
     const category = newMember.guild.channels.cache.get(categoryId);
