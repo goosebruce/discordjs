@@ -1,14 +1,14 @@
 const fs = require("fs"); // Define fs (file system).
 const express = require('express');
 const mysql = require('mysql');
-const { Client, Intents } = require("discord.js"); // Define Client, Intents, and Collection.
+const { Client, Intents, GatewayIntentBits, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
 const config = require('../config.json');
 const path = require('path');
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
+  intents: [GatewayIntentBits.Guilds, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 }); // Connect to our discord bot.
-
+client.commands = new Collection();
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
 const port = process.env.PORT
 const app = express();
