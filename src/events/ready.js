@@ -30,7 +30,7 @@ module.exports = {
 
                 console.log("Successfully reloaded application (/) commands.");
 
-                await client.guild.roles.fetch(config.pro_role_id);
+                await client.guild.members.fetch()
                 console.log("Successfully fetched pro role members")
             } catch (error) {
                 console.error(error);
