@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, REST } = require('discord.js');
 const commandarray = []; // Array to store commands for sending to the REST API.
 const fs = require("fs")
 
