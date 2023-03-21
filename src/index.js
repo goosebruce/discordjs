@@ -20,6 +20,8 @@ const connection = mysql.createConnection(process.env.MYSQL_URL);
 
 // Execute code when the "ready" client event is triggered.
 client.once("ready", () => {
+  guild.roles.fetch('ROLEID');
+
   const commandFiles = fs
     .readdirSync("src/Commands")
     .filter(file => file.endsWith(".js")); // Get and filter all the files in the "Commands" Folder.
@@ -42,6 +44,9 @@ client.once("ready", () => {
       });
 
       console.log("Successfully reloaded application (/) commands.");
+
+      await guild.roles.fetch(config.pro_role_id);
+      console.log("Successfully fetched pro role members")
     } catch (error) {
       console.error(error);
     }
