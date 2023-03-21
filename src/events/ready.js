@@ -1,4 +1,4 @@
-const { Events, REST, Routes } = require('discord.js');
+const { Events, REST, Routes, Guild, GuildMemberManager } = require('discord.js');
 const commandarray = []; // Array to store commands for sending to the REST API.
 const fs = require("fs")
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
@@ -30,7 +30,6 @@ module.exports = {
 
                 console.log("Successfully reloaded application (/) commands.");
 
-                await client.guild.members.fetch()
                 console.log("Successfully fetched pro role members")
             } catch (error) {
                 console.error(error);
