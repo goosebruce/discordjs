@@ -4,7 +4,7 @@ const fs = require("fs"); // Define fs (file system).
 const express = require('express');
 const mysql = require('mysql');
 const { Client, Intents, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
-const config = require('./config.json');
+const config = require('../config.json');
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 }); // Connect to our discord bot.
