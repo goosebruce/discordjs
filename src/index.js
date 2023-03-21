@@ -20,7 +20,6 @@ const connection = mysql.createConnection(process.env.MYSQL_URL);
 
 // Execute code when the "ready" client event is triggered.
 client.once("ready", () => {
-  guild.roles.fetch('ROLEID');
 
   const commandFiles = fs
     .readdirSync("src/Commands")
