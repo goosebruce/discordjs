@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 
 module.exports = {
-    name: Events.guildMemberUpdate,
+    name: Events.GuildMemberUpdate,
     async execute(oldMember, newMember) {
         // Check if the new role is the 'Pro' role
         const proRole = newMember.roles.cache.find(role => role.name === 'Pro');
