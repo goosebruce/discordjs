@@ -45,7 +45,7 @@ client.once("ready", () => {
 
       console.log("Successfully reloaded application (/) commands.");
 
-      await guild.roles.fetch(config.pro_role_id);
+      await client.guild.roles.fetch(config.pro_role_id);
       console.log("Successfully fetched pro role members")
     } catch (error) {
       console.error(error);
