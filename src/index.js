@@ -2,7 +2,6 @@ const fs = require("fs"); // Define fs (file system).
 const express = require('express');
 const mysql = require('mysql');
 const { Client, GatewayIntentBits, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
-const config = require('../config.json');
 const path = require('path');
 
 const client = new Client({
