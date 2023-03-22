@@ -1,6 +1,5 @@
 const { Events } = require('discord.js');
-const config = require('discordjs/config.json');
-
+const config = require('@/config.json');
 module.exports = {
     name: Events.GuildMemberUpdate,
     async execute(oldMember, newMember) {
