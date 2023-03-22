@@ -6,11 +6,13 @@ module.exports = {
     name: Events.GuildMemberUpdate,
     async execute(oldMember, newMember) {
         // Check if the new role is the 'Pro' role
+        console.log('triggered')
         const proRole = newMember.roles.cache.find(role => role.name === 'Pro');
+        const member = oldMember.options.getMember(oldMember.id);
+        console.log(member.roles)
         const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group'));
         const proGroupCount = proGroupRoles.size;
         if (proRole === undefined) {
-            console.log(proGroupRoles)
             if (proGroupRoles.size === 0) {
                 // The member didn't have any "Pro Group -" roles, do nothing
                 return;
