@@ -7,7 +7,7 @@ module.exports = {
     async execute(oldMember, newMember) {
         // Check if the new role is the 'Pro' role
         const proRole = newMember.roles.cache.find(role => role.name === 'Pro');
-        const member = oldMember.options.getMember();
+        const member = oldMember.options.getMember(oldMember.name);
         console.log(member)
         const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group'));
         const proGroupCount = proGroupRoles.size;
