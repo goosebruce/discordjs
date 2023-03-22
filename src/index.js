@@ -3,7 +3,6 @@ const express = require('express');
 const mysql = require('mysql');
 const { Client, GatewayIntentBits, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
 const path = require('path');
-const fs = require('fs')
 let config = JSON.parse(fs.readFileSync('./config.json'))
 
 const client = new Client({
