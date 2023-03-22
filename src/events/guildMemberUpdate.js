@@ -10,7 +10,6 @@ module.exports = {
         const proGroupRoles = oldMember.roles.cache.filter(role => role.name.startsWith('Pro Group'));
         const proGroupCount = proGroupRoles.size;
         if (proRole === undefined) {
-            console.log(`users pro groups: ${proGroupRoles.names.join(', ')}`)
             console.log(proGroupRoles)
             if (proGroupRoles.size === 0) {
                 // The member didn't have any "Pro Group -" roles, do nothing
